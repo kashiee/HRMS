@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRMS UK Payroll System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1 class="logo">HRMS Payroll</h1>
+                <p class="subtitle">UK Payroll & HR Management</p>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator" id="backendStatus">
+                    <div class="status-dot"></div>
+                    <span>Checking Backend...</span>
+                </div>
+                <div class="company-name" id="companyName">Demo Company Ltd</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <button class="nav-item active" data-section="company">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                Company
+            </button>
+            <button class="nav-item" data-section="employees">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H17c-.8 0-1.54.37-2.01 1l-1.7 2.55A1.5 1.5 0 0 0 13.5 12H12v8h8z"/>
+                </svg>
+                Employees
+            </button>
+            <button class="nav-item" data-section="payroll">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                </svg>
+                Payroll
+            </button>
+            <button class="nav-item" data-section="ai">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                AI Assistant
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Company Section -->
+        <section id="company" class="section active">
+            <div class="section-header">
+                <h2>Company Setup</h2>
+                <button class="btn btn-primary" id="editCompanyBtn">Edit Company</button>
+            </div>
+            
+            <div class="company-info" id="companyInfo">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Company Name</label>
+                        <div class="info-value" id="companyNameDisplay">Demo Company Ltd</div>
+                    </div>
+                    <div class="info-item">
+                        <label>PAYE Reference</label>
+                        <div class="info-value" id="payeReference">123/AB12345</div>
+                    </div>
+                    <div class="info-item">
+                        <label>Address</label>
+                        <div class="info-value" id="companyAddress">123 Business Street, London, SW1A 1AA</div>
+                    </div>
+                    <div class="info-item">
+                        <label>HMRC Status</label>
+                        <div class="info-value status-badge active" id="hmrcStatus">Registered</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="departments-section">
+                <h3>Departments</h3>
+                <div class="departments-list" id="departmentsList">
+                    <!-- Departments will be loaded here -->
+                </div>
+                <button class="btn btn-secondary" id="addDepartmentBtn">Add Department</button>
+            </div>
+        </section>
+
+        <!-- Employees Section -->
+        <section id="employees" class="section">
+            <div class="section-header">
+                <h2>Employee Management</h2>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="uploadCsvBtn">Upload CSV</button>
+                    <button class="btn btn-primary" id="addEmployeeBtn">Add Employee</button>
+                </div>
+            </div>
+
+            <div class="employees-container">
+                <div class="employees-list" id="employeesList">
+                    <!-- Employees will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Payroll Section -->
+        <section id="payroll" class="section">
+            <div class="section-header">
+                <h2>Payroll Processing</h2>
+                <button class="btn btn-primary" id="runPayrollBtn">
+                    <span class="btn-text">Run Payroll</span>
+                    <span class="btn-spinner hidden"></span>
+                </button>
+            </div>
+
+            <div class="payroll-summary" id="payrollSummary">
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="card-title">Total Employees</div>
+                        <div class="card-value" id="totalEmployees">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-title">Gross Pay</div>
+                        <div class="card-value" id="totalGrossPay">£0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-title">Net Pay</div>
+                        <div class="card-value" id="totalNetPay">£0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-title">Tax Due</div>
+                        <div class="card-value" id="totalTaxDue">£0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payslips-section">
+                <h3>Generated Payslips</h3>
+                <div class="payslips-list" id="payslipsList">
+                    <p class="empty-state">Run payroll to generate payslips</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Assistant Section -->
+        <section id="ai" class="section">
+            <div class="section-header">
+                <h2>AI Assistant</h2>
+            </div>
+            
+            <div class="ai-container">
+                <div class="ai-input-container">
+                    <input type="text" class="ai-input" id="aiInput" placeholder="Ask about payroll, employees, or tax calculations...">
+                    <button class="ai-send-btn" id="aiSendBtn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="ai-output" id="aiOutput">
+                    <div class="ai-welcome">
+                        <h3>Welcome to HRMS AI Assistant</h3>
+                        <p>Ask me anything about:</p>
+                        <ul>
+                            <li>Employee information and payroll details</li>
+                            <li>Tax calculations and deductions</li>
+                            <li>Company compliance and reporting</li>
+                            <li>Payroll processing and payslips</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div class="modal" id="companyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Company Information</h3>
+                <button class="modal-close" id="closeCompanyModal">&times;</button>
+            </div>
+            <form id="companyForm">
+                <div class="form-group">
+                    <label for="companyNameInput">Company Name</label>
+                    <input type="text" id="companyNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="payeReferenceInput">PAYE Reference</label>
+                    <input type="text" id="payeReferenceInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyAddressInput">Address</label>
+                    <textarea id="companyAddressInput" rows="3" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelCompanyBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="employeeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="employeeModalTitle">Add Employee</h3>
+                <button class="modal-close" id="closeEmployeeModal">&times;</button>
+            </div>
+            <form id="employeeForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeNameInput">Full Name</label>
+                        <input type="text" id="employeeNameInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeEmailInput">Email</label>
+                        <input type="email" id="employeeEmailInput" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeRoleInput">Role</label>
+                        <input type="text" id="employeeRoleInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeDepartmentInput">Department</label>
+                        <select id="employeeDepartmentInput" required>
+                            <option value="">Select Department</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeSalaryInput">Annual Salary</label>
+                        <input type="number" id="employeeSalaryInput" min="0" step="1000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeTaxCodeInput">Tax Code</label>
+                        <input type="text" id="employeeTaxCodeInput" value="BR" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeNiInput">National Insurance Number</label>
+                        <input type="text" id="employeeNiInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeContractInput">Contract Type</label>
+                        <select id="employeeContractInput" required>
+                            <option value="full_time">Full Time</option>
+                            <option value="part_time">Part Time</option>
+                            <option value="contractor">Contractor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelEmployeeBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="departmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Department</h3>
+                <button class="modal-close" id="closeDepartmentModal">&times;</button>
+            </div>
+            <form id="departmentForm">
+                <div class="form-group">
+                    <label for="departmentNameInput">Department Name</label>
+                    <input type="text" id="departmentNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="departmentCodeInput">Department Code</label>
+                    <input type="text" id="departmentCodeInput" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelDepartmentBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Department</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html> 

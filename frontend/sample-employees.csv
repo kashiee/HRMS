@@ -1,0 +1,6 @@
+name,role,salary,tax_code,national_insurance_number,email,address,postcode,employment_type,start_date,pension_scheme,pension_contribution
+John Smith,Software Engineer,45000,BR,AB123456C,john.smith@company.com,123 Main Street London,SW1A 1AA,full_time,2023-01-01,auto_enrolment,0.05
+Jane Doe,Product Manager,55000,BR,CD789012E,jane.doe@company.com,456 Oak Avenue Manchester,M1 2BB,full_time,2023-02-01,auto_enrolment,0.05
+Bob Wilson,Data Analyst,42000,BR,EF345678G,bob.wilson@company.com,789 Pine Road Birmingham,B1 3CC,full_time,2023-03-01,auto_enrolment,0.05
+Alice Brown,UX Designer,48000,BR,GH901234I,alice.brown@company.com,321 Elm Street Leeds,LS1 4DD,full_time,2023-04-01,auto_enrolment,0.05
+Charlie Davis,DevOps Engineer,52000,BR,IJ567890K,charlie.davis@company.com,654 Maple Lane Bristol,BS1 5EE,full_time,2023-05-01,auto_enrolment,0.05 

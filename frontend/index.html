@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRMS Payroll System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-top: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background-color: #f8fafc;
+        }
+
+        .upload-area.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.875rem;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table th {
+            background: #f9fafb;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .payslip-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .payslip-item:last-child {
+            border-bottom: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-gray-600 {
+            color: #6b7280;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .space-x-2 > * + * {
+            margin-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>HRMS Payroll System</h1>
+            <p>AI-Powered UK Payroll Processing</p>
+            <div class="status">
+                <div class="status-dot"></div>
+                Backend Connected
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Alerts -->
+        <div id="alerts"></div>
+
+        <div class="grid">
+            <!-- CSV Upload Section -->
+            <div class="card">
+                <h2>Upload Employee Data</h2>
+                
+                <div class="upload-area" id="uploadArea">
+                    <p><strong>Drop CSV file here</strong> or click to browse</p>
+                    <p class="text-sm text-gray-600 mt-2">Supports: name, role, salary, tax_code, email, etc.</p>
+                    <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                </div>
+
+                <div id="fileInfo" class="hidden">
+                    <p class="text-sm text-gray-600 mb-4">
+                        <strong id="fileName"></strong> - <span id="fileSize"></span>
+                    </p>
+                </div>
+
+                <div id="employeePreview" class="hidden">
+                    <h3 class="text-sm font-medium mb-4">Employee Preview</h3>
+                    <div class="overflow-x-auto">
+                        <table class="table" id="employeeTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Salary</th>
+                                    <th>Tax Code</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button id="processBtn" class="btn" disabled>
+                        <span id="processBtnText">Process Payroll</span>
+                        <span id="processBtnSpinner" class="loading hidden"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Payslip Results Section -->
+            <div class="card">
+                <h2>Generated Payslips</h2>
+                
+                <div id="payslipList">
+                    <p class="text-gray-600">Upload employee data and process payroll to generate payslips.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample CSV Format -->
+        <div class="card">
+            <h2>Sample CSV Format</h2>
+            <p class="text-sm text-gray-600 mb-4">Use this format for your employee data:</p>
+            <div style="background: #f8fafc; padding: 16px; border-radius: 6px; font-family: monospace; font-size: 0.875rem; overflow-x: auto;">
+name,role,salary,tax_code,national_insurance_number,email,address,postcode,employment_type,start_date,pension_scheme,pension_contribution<br>
+John Smith,Software Engineer,45000,BR,AB123456C,john.smith@company.com,123 Main Street London,SW1A 1AA,full_time,2023-01-01,auto_enrolment,0.05<br>
+Jane Doe,Product Manager,55000,BR,CD789012E,jane.doe@company.com,456 Oak Avenue Manchester,M1 2BB,full_time,2023-02-01,auto_enrolment,0.05
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PayrollSystem {
+            constructor() {
+                this.employees = [];
+                this.payslips = [];
+                this.isProcessing = false;
+                this.backendUrl = 'http://localhost:8000';
+                
+                this.initializeEventListeners();
+                this.checkBackendConnection();
+            }
+
+            initializeEventListeners() {
+                // File upload
+                const uploadArea = document.getElementById('uploadArea');
+                const fileInput = document.getElementById('fileInput');
+
+                uploadArea.addEventListener('click', () => fileInput.click());
+                uploadArea.addEventListener('dragover', this.handleDragOver.bind(this));
+                uploadArea.addEventListener('dragleave', this.handleDragLeave.bind(this));
+                uploadArea.addEventListener('drop', this.handleDrop.bind(this));
+                fileInput.addEventListener('change', this.handleFileSelect.bind(this));
+
+                // Process button
+                document.getElementById('processBtn').addEventListener('click', this.processPayroll.bind(this));
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                e.currentTarget.classList.add('dragover');
+            }
+
+            handleDragLeave(e) {
+                e.preventDefault();
+                e.currentTarget.classList.remove('dragover');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                e.currentTarget.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            }
+
+            handleFileSelect(e) {
+                const files = e.target.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            }
+
+            processFile(file) {
+                if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+                    this.showAlert('Please upload a valid CSV file', 'error');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const csv = e.target.result;
+                        const employees = this.parseCSV(csv);
+                        
+                        if (employees.length === 0) {
+                            this.showAlert('No valid employee data found in CSV', 'error');
+                            return;
+                        }
+
+                        this.employees = employees;
+                        this.displayEmployeePreview();
+                        this.showAlert(`Loaded ${employees.length} employees successfully`, 'success');
+                        document.getElementById('processBtn').disabled = false;
+                        
+                    } catch (error) {
+                        this.showAlert('Error parsing CSV file: ' + error.message, 'error');
+                    }
+                };
+                reader.readAsText(file);
+
+                // Update file info
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileSize').textContent = this.formatFileSize(file.size);
+                document.getElementById('fileInfo').classList.remove('hidden');
+            }
+
+            parseCSV(csv) {
+                const lines = csv.split('\n');
+                const headers = lines[0].split(',').map(h => h.trim());
+                const employees = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    
+                    const values = lines[i].split(',').map(v => v.trim());
+                    const employee = {};
+
+                    headers.forEach((header, index) => {
+                        if (values[index]) {
+                            employee[header] = values[index];
+                        }
+                    });
+
+                    // Validate required fields
+                    if (employee.name && employee.salary && employee.email) {
+                        employees.push({
+                            name: employee.name,
+                            role: employee.role || 'Employee',
+                            salary: parseFloat(employee.salary) || 0,
+                            tax_code: employee.tax_code || 'BR',
+                            national_insurance_number: employee.national_insurance_number || '',
+                            email: employee.email,
+                            phone: employee.phone || '',
+                            address: employee.address || '',
+                            postcode: employee.postcode || '',
+                            employment_type: employee.employment_type || 'full_time',
+                            start_date: employee.start_date || '',
+                            pension_scheme: employee.pension_scheme || 'auto_enrolment',
+                            pension_contribution: parseFloat(employee.pension_contribution) || 0.05
+                        });
+                    }
+                }
+
+                return employees;
+            }
+
+            displayEmployeePreview() {
+                const tbody = document.querySelector('#employeeTable tbody');
+                tbody.innerHTML = '';
+
+                this.employees.slice(0, 5).forEach(employee => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${employee.name}</td>
+                        <td>${employee.role}</td>
+                        <td>£${employee.salary.toLocaleString()}</td>
+                        <td>${employee.tax_code}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                if (this.employees.length > 5) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td colspan="4" class="text-sm text-gray-600">... and ${this.employees.length - 5} more employees</td>`;
+                    tbody.appendChild(row);
+                }
+
+                document.getElementById('employeePreview').classList.remove('hidden');
+            }
+
+            async processPayroll() {
+                if (this.isProcessing) return;
+
+                this.isProcessing = true;
+                this.updateProcessButton(true);
+
+                try {
+                    const response = await fetch(`${this.backendUrl}/payroll/batch`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            employees: this.employees,
+                            pay_period: {
+                                start_date: new Date().toISOString().split('T')[0],
+                                end_date: new Date().toISOString().split('T')[0]
+                            }
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    this.payslips = data.payslips || [];
+                    this.displayPayslips();
+                    this.showAlert(`Generated ${this.payslips.length} payslips successfully`, 'success');
+
+                } catch (error) {
+                    console.error('Payroll processing error:', error);
+                    this.showAlert(`Error processing payroll: ${error.message}`, 'error');
+                } finally {
+                    this.isProcessing = false;
+                    this.updateProcessButton(false);
+                }
+            }
+
+            displayPayslips() {
+                const container = document.getElementById('payslipList');
+                
+                if (this.payslips.length === 0) {
+                    container.innerHTML = '<p class="text-gray-600">No payslips generated yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                this.payslips.forEach((payslip, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'payslip-item';
+                    item.innerHTML = `
+                        <div>
+                            <div class="font-medium">${payslip.employee_name}</div>
+                            <div class="text-sm text-gray-600">£${payslip.net_pay?.toLocaleString() || 'N/A'}</div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="btn btn-secondary" onclick="payrollSystem.downloadPayslip(${index})">
+                                Download PDF
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
+
+            async downloadPayslip(index) {
+                const payslip = this.payslips[index];
+                if (!payslip) return;
+
+                try {
+                    const response = await fetch(`${this.backendUrl}/payroll/payslip/${payslip.id}`);
+                    if (!response.ok) throw new Error('Failed to download payslip');
+
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${payslip.employee_name}_payslip.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+
+                } catch (error) {
+                    this.showAlert(`Error downloading payslip: ${error.message}`, 'error');
+                }
+            }
+
+            updateProcessButton(processing) {
+                const btn = document.getElementById('processBtn');
+                const text = document.getElementById('processBtnText');
+                const spinner = document.getElementById('processBtnSpinner');
+
+                if (processing) {
+                    btn.disabled = true;
+                    text.textContent = 'Processing...';
+                    spinner.classList.remove('hidden');
+                } else {
+                    btn.disabled = this.employees.length === 0;
+                    text.textContent = 'Process Payroll';
+                    spinner.classList.add('hidden');
+                }
+            }
+
+            showAlert(message, type = 'info') {
+                const alertsContainer = document.getElementById('alerts');
+                const alert = document.createElement('div');
+                alert.className = `alert alert-${type}`;
+                alert.textContent = message;
+
+                alertsContainer.appendChild(alert);
+
+                setTimeout(() => {
+                    alert.remove();
+                }, 5000);
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            async checkBackendConnection() {
+                try {
+                    const response = await fetch(`${this.backendUrl}/health`);
+                    if (response.ok) {
+                        console.log('Backend connected successfully');
+                    } else {
+                        this.showAlert('Backend connection failed', 'error');
+                    }
+                } catch (error) {
+                    this.showAlert('Cannot connect to backend. Make sure the server is running on http://localhost:8000', 'error');
+                }
+            }
+        }
+
+        // Initialize the payroll system
+        const payrollSystem = new PayrollSystem();
+    </script>
+</body>
+</html> 
