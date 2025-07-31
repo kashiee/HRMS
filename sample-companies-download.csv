@@ -1,0 +1,11 @@
+name,registration_number,tax_office,address,postcode,phone,email
+TechCorp Solutions Ltd,12345678,123,123 Innovation Street London,SW1A 1AA,020 1234 5678,info@techcorp.com
+Global Finance Ltd,87654321,456,456 Business Avenue Manchester,M1 1AA,0161 234 5678,contact@globalfinance.com
+Innovation Labs Ltd,11223344,789,789 Technology Park Birmingham,B1 1AA,0121 345 6789,hello@innovationlabs.com
+Digital Services Ltd,55667788,321,321 Digital Street Leeds,LS1 1AA,0113 456 7890,info@digitalservices.com
+Creative Agency Ltd,99887766,654,654 Creative Lane Bristol,BS1 1AA,0117 567 8901,studio@creativeagency.com
+Healthcare Systems Ltd,44332211,987,987 Medical Centre Liverpool,L1 1AA,0151 678 9012,admin@healthcaresystems.com
+Education First Ltd,66778899,654,654 Learning Street Newcastle,NE1 1AA,0191 789 0123,info@educationfirst.com
+Manufacturing Pro Ltd,33445566,321,321 Factory Road Sheffield,S1 1AA,0114 890 1234,production@manufacturingpro.com
+Retail Solutions Ltd,77889900,456,456 Shopping Centre Glasgow,G1 1AA,0141 901 2345,sales@retailsolutions.com
+Consulting Group Ltd,22334455,789,789 Consulting House Edinburgh,EH1 1AA,0131 012 3456,partners@consultinggroup.com 

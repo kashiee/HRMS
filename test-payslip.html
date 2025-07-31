@@ -1,0 +1,197 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Payslip - John Smith</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+            }
+            .header {
+                text-align: center;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
+            }
+            .company-name {
+                font-size: 24px;
+                font-weight: bold;
+                color: #007bff;
+                margin-bottom: 5px;
+            }
+            .payslip-title {
+                font-size: 18px;
+                color: #666;
+            }
+            .employee-info {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 30px;
+            }
+            .info-section {
+                flex: 1;
+            }
+            .info-section h3 {
+                margin: 0 0 10px 0;
+                color: #007bff;
+                font-size: 16px;
+            }
+            .info-row {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+            .pay-period {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 30px;
+            }
+            .pay-period h3 {
+                margin: 0 0 10px 0;
+                color: #007bff;
+            }
+            .earnings-deductions {
+                display: flex;
+                gap: 30px;
+                margin-bottom: 30px;
+            }
+            .section {
+                flex: 1;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 20px;
+            }
+            .section h3 {
+                margin: 0 0 15px 0;
+                color: #007bff;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 10px;
+            }
+            .amount-row {
+                display: flex;
+                justify-content: space-between;
+                margin: 8px 0;
+                font-size: 14px;
+            }
+            .total-row {
+                border-top: 2px solid #007bff;
+                margin-top: 15px;
+                padding-top: 15px;
+                font-weight: bold;
+                font-size: 16px;
+            }
+            .net-pay {
+                background: #28a745;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                text-align: center;
+                margin-top: 20px;
+            }
+            .footer {
+                margin-top: 30px;
+                text-align: center;
+                font-size: 12px;
+                color: #666;
+                border-top: 1px solid #ddd;
+                padding-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="company-name">Global Finance Ltd</div>
+            <div class="payslip-title">PAYSLIP</div>
+        </div>
+        
+        <div class="employee-info">
+            <div class="info-section">
+                <h3>Employee Details</h3>
+                <div class="info-row"><strong>Name:</strong> John Smith</div>
+                <div class="info-row"><strong>Employee No:</strong> EMP001</div>
+                <div class="info-row"><strong>NI Number:</strong> AB123456C</div>
+                <div class="info-row"><strong>Tax Code:</strong> BR</div>
+            </div>
+            <div class="info-section">
+                <h3>Company Details</h3>
+                <div class="info-row"><strong>Company:</strong> Global Finance Ltd</div>
+                <div class="info-row"><strong>PAYE Ref:</strong> 87654321</div>
+                <div class="info-row"><strong>Tax Office:</strong> 456</div>
+            </div>
+        </div>
+        
+        <div class="pay-period">
+            <h3>Pay Period</h3>
+            <div class="info-row"><strong>Period:</strong> 2024-07-01 to 2024-07-31</div>
+            <div class="info-row"><strong>Pay Date:</strong> 2024-07-25</div>
+        </div>
+        
+        <div class="earnings-deductions">
+            <div class="section">
+                <h3>Earnings</h3>
+                <div class="amount-row">
+                    <span>Basic Pay:</span>
+                    <span>£3,750.00</span>
+                </div>
+                <div class="amount-row">
+                    <span>Overtime:</span>
+                    <span>£0.00</span>
+                </div>
+                <div class="amount-row">
+                    <span>Bonus:</span>
+                    <span>£0.00</span>
+                </div>
+                <div class="amount-row">
+                    <span>Other Pay:</span>
+                    <span>£0.00</span>
+                </div>
+                <div class="amount-row total-row">
+                    <span>Gross Pay:</span>
+                    <span>£3,750.00</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>Deductions</h3>
+                <div class="amount-row">
+                    <span>PAYE Tax:</span>
+                    <span>£540.50</span>
+                </div>
+                <div class="amount-row">
+                    <span>National Insurance:</span>
+                    <span>£324.30</span>
+                </div>
+                <div class="amount-row">
+                    <span>Pension:</span>
+                    <span>£187.50</span>
+                </div>
+                <div class="amount-row">
+                    <span>Student Loan:</span>
+                    <span>£132.79</span>
+                </div>
+                <div class="amount-row">
+                    <span>Other Deductions:</span>
+                    <span>£0.00</span>
+                </div>
+                <div class="amount-row total-row">
+                    <span>Total Deductions:</span>
+                    <span>£1,185.09</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="net-pay">
+            <h3>Net Pay: £2,564.91</h3>
+        </div>
+        
+        <div class="footer">
+            <p>This payslip was generated automatically by the HRMS system.</p>
+            <p>Generated on: 2025-07-29 13:31:37</p>
+        </div>
+    </body>
+    </html>
+    

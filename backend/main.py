@@ -11,7 +11,7 @@ import uvicorn
 from contextlib import asynccontextmanager
 
 from database import engine, Base
-from routers import company, employee, payroll, nlp
+from routers import company, employee, payroll, nlp, ni
 from services.gdpr import GDPRMiddleware
 
 # Create database tables
@@ -37,7 +37,7 @@ app = FastAPI(
 # Add middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001"],  # Frontend URLs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -51,6 +51,7 @@ app.include_router(company.router, prefix="/api/v1/company", tags=["Company"])
 app.include_router(employee.router, prefix="/api/v1/employee", tags=["Employee"])
 app.include_router(payroll.router, prefix="/api/v1/payroll", tags=["Payroll"])
 app.include_router(nlp.router, prefix="/api/v1/nlp", tags=["NLP"])
+app.include_router(ni.router, prefix="/api/v1/ni", tags=["National Insurance"])
 
 @app.get("/")
 async def root():

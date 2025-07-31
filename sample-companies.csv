@@ -1,0 +1,6 @@
+name,registration_number,tax_office,address,postcode,phone,email,website,industry,employee_count,annual_revenue,status
+TechCorp Solutions Ltd,12345678,HMRC London,123 Business Street,SW1A 1AA,020 7123 4567,info@techcorp.co.uk,https://techcorp.co.uk,Technology,150,5000000,active
+Global Industries Ltd,87654321,HMRC Manchester,456 Industrial Way,M1 1AA,0161 234 5678,contact@globalindustries.com,https://globalindustries.com,Manufacturing,200,8000000,active
+Innovation Systems Ltd,11223344,HMRC Birmingham,789 Innovation Drive,B1 1AA,0121 345 6789,hello@innovationsystems.co.uk,https://innovationsystems.co.uk,Software,75,2500000,active
+Digital Dynamics Ltd,55667788,HMRC Glasgow,321 Digital Lane,G1 1AA,0141 456 7890,support@digitaldynamics.co.uk,https://digitaldynamics.co.uk,Technology,120,4000000,active
+Future Technologies Ltd,99887766,HMRC Leeds,654 Future Road,L1 1AA,0113 567 8901,info@futuretech.co.uk,https://futuretech.co.uk,Consulting,300,12000000,active 

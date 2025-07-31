@@ -2,10 +2,12 @@
 Company and Department management endpoints
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
+import csv
+import io
 
 from database import get_db
 from models import Company, Department, Employee, Payslip, Document, CompanyCreate, CompanyResponse, DepartmentCreate, DepartmentResponse, EmployeeCreate, EmployeeResponse, PayslipCreate, PayslipResponse, DepartmentCreateWithoutCompany
@@ -47,7 +49,7 @@ async def get_companies(
     db: Session = Depends(get_db)
 ):
     """
-    Get all companies with pagination
+    Get all companies
     """
     companies = db.query(Company).offset(skip).limit(limit).all()
     return companies
@@ -94,7 +96,7 @@ async def update_company(
         if existing_company:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Registration number already exists"
+                detail="Company with this registration number already exists"
             )
     
     # Update company fields
@@ -107,13 +109,13 @@ async def update_company(
     
     return company
 
-@router.delete("/{company_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{company_id}")
 async def delete_company(
     company_id: int,
     db: Session = Depends(get_db)
 ):
     """
-    Delete a company (cascade will handle related records)
+    Delete a company
     """
     company = db.query(Company).filter(Company.id == company_id).first()
     if not company:
@@ -124,7 +126,90 @@ async def delete_company(
     
     db.delete(company)
     db.commit()
-    return None
+    
+    return {"message": "Company deleted successfully"}
+
+# CSV Upload endpoint for companies
+@router.post("/upload-csv", status_code=status.HTTP_201_CREATED)
+async def upload_companies_csv(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    """
+    Upload companies from CSV file
+    """
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File must be a CSV"
+        )
+    
+    try:
+        # Read CSV content
+        content = await file.read()
+        csv_text = content.decode('utf-8')
+        
+        # Parse CSV
+        csv_reader = csv.DictReader(io.StringIO(csv_text))
+        
+        companies_created = 0
+        companies_updated = 0
+        errors = []
+        
+        for row in csv_reader:
+            try:
+                # Clean and validate data
+                company_data = {
+                    "name": row.get("name", "").strip(),
+                    "registration_number": row.get("registration_number", "").strip(),
+                    "tax_office": row.get("tax_office", "").strip(),
+                    "address": row.get("address", "").strip(),
+                    "postcode": row.get("postcode", "").strip(),
+                    "phone": row.get("phone", "").strip(),
+                    "email": row.get("email", "").strip(),
+                }
+                
+                # Validate required fields
+                if not company_data["name"] or not company_data["registration_number"]:
+                    errors.append(f"Row {csv_reader.line_num}: Missing required fields")
+                    continue
+                
+                # Check if company already exists
+                existing_company = db.query(Company).filter(
+                    Company.registration_number == company_data["registration_number"]
+                ).first()
+                
+                if existing_company:
+                    # Update existing company
+                    for field, value in company_data.items():
+                        if value:  # Only update non-empty values
+                            setattr(existing_company, field, value)
+                    existing_company.updated_at = datetime.now()
+                    companies_updated += 1
+                else:
+                    # Create new company
+                    company = Company(**company_data)
+                    db.add(company)
+                    companies_created += 1
+                
+            except Exception as e:
+                errors.append(f"Row {csv_reader.line_num}: {str(e)}")
+        
+        # Commit all changes
+        db.commit()
+        
+        return {
+            "message": "CSV upload completed",
+            "companies_created": companies_created,
+            "companies_updated": companies_updated,
+            "errors": errors
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error processing CSV: {str(e)}"
+        )
 
 # Department endpoints
 @router.post("/{company_id}/departments", response_model=DepartmentResponse, status_code=status.HTTP_201_CREATED)
@@ -190,13 +275,13 @@ async def get_departments(
     
     return departments
 
-@router.get("/departments/{department_id}", response_model=DepartmentResponse)
-async def get_department(
+@router.delete("/departments/{department_id}")
+async def delete_department(
     department_id: int,
     db: Session = Depends(get_db)
 ):
     """
-    Get a specific department by ID
+    Delete a department
     """
     department = db.query(Department).filter(Department.id == department_id).first()
     if not department:
@@ -204,7 +289,11 @@ async def get_department(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Department not found"
         )
-    return department
+    
+    db.delete(department)
+    db.commit()
+    
+    return {"message": "Department deleted successfully"}
 
 @router.put("/departments/{department_id}", response_model=DepartmentResponse)
 async def update_department(
@@ -246,21 +335,63 @@ async def update_department(
     
     return department
 
-@router.delete("/departments/{department_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_department(
-    department_id: int,
+# Initialize sample departments for a company
+@router.post("/{company_id}/initialize-departments")
+async def initialize_sample_departments(
+    company_id: int,
     db: Session = Depends(get_db)
 ):
     """
-    Delete a department
+    Initialize sample departments for a company
     """
-    department = db.query(Department).filter(Department.id == department_id).first()
-    if not department:
+    # Verify company exists
+    company = db.query(Company).filter(Company.id == company_id).first()
+    if not company:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Department not found"
+            detail="Company not found"
         )
     
-    db.delete(department)
+    # Sample departments
+    sample_departments = [
+        {"name": "Human Resources", "code": "HR"},
+        {"name": "Finance & Accounting", "code": "FIN"},
+        {"name": "Information Technology", "code": "IT"},
+        {"name": "Sales & Marketing", "code": "SALES"},
+        {"name": "Operations", "code": "OPS"},
+        {"name": "Research & Development", "code": "R&D"},
+        {"name": "Customer Service", "code": "CS"},
+        {"name": "Legal & Compliance", "code": "LEGAL"},
+        {"name": "Facilities Management", "code": "FM"},
+        {"name": "Quality Assurance", "code": "QA"},
+        {"name": "Product Management", "code": "PM"},
+        {"name": "Business Development", "code": "BD"},
+        {"name": "Engineering", "code": "ENG"},
+        {"name": "Design", "code": "DESIGN"},
+        {"name": "Data Science", "code": "DS"}
+    ]
+    
+    departments_created = 0
+    
+    for dept_data in sample_departments:
+        # Check if department already exists
+        existing_dept = db.query(Department).filter(
+            Department.company_id == company_id,
+            Department.code == dept_data["code"]
+        ).first()
+        
+        if not existing_dept:
+            department = Department(
+                name=dept_data["name"],
+                code=dept_data["code"],
+                company_id=company_id
+            )
+            db.add(department)
+            departments_created += 1
+    
     db.commit()
-    return None 
+    
+    return {
+        "message": f"Initialized {departments_created} sample departments",
+        "departments_created": departments_created
+    } 

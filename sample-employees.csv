@@ -1,6 +1,11 @@
-name,role,salary,tax_code,national_insurance_number,email,address,postcode,employment_type,start_date,pension_scheme,pension_contribution
-John Smith,Software Engineer,45000,BR,AB123456C,john.smith@company.com,123 Main Street London,SW1A 1AA,full_time,2023-01-01,auto_enrolment,0.05
-Jane Doe,Product Manager,55000,BR,CD789012E,jane.doe@company.com,456 Oak Avenue Manchester,M1 2BB,full_time,2023-02-01,auto_enrolment,0.05
-Bob Wilson,Data Analyst,42000,BR,EF345678G,bob.wilson@company.com,789 Pine Road Birmingham,B1 3CC,full_time,2023-03-01,auto_enrolment,0.05
-Alice Brown,UX Designer,48000,BR,GH901234I,alice.brown@company.com,321 Elm Street Leeds,LS1 4DD,full_time,2023-04-01,auto_enrolment,0.05
-Charlie Davis,DevOps Engineer,52000,BR,IJ567890K,charlie.davis@company.com,654 Maple Lane Bristol,BS1 5EE,full_time,2023-05-01,auto_enrolment,0.05 
+reference,forename,surname,ni_number,email,address_1,address_2,postcode,taxable_pay_this_employment,tax_code
+EMP001,John,Smith,AB123456C,john.smith@company.com,123 Main Street,Apartment 4A,SW1A 1AA,45000,BR
+EMP002,Jane,Doe,CD789012E,jane.doe@company.com,456 Oak Avenue,Suite 2B,M1 1AA,52000,1257L
+EMP003,Michael,Brown,EF345678G,michael.brown@company.com,789 Pine Road,Unit 5C,B1 1AA,48000,BR
+EMP004,Sarah,Wison,GH901234I,sarah.wilson@company.com,321 Elm Street,Flat 3D,EH1 1AA,41000,BR
+EMP005,David,Jones,IJ567890K,david.jones@company.com,654 Maple Drive,Apartment 1E,CF1 1AA,46000,BR
+EMP006,Emma,Taylor,KL234567M,emma.taylor@company.com,987 Cedar Lane,Suite 4F,SW1A 1AA,43000,BR
+EMP007,James,Anderson,MN890123O,james.anderson@company.com,147 Birch Way,Unit 2G,M1 1AA,55000,1257L
+EMP008,Lisa,Martinez,OP456789Q,lisa.martinez@company.com,258 Willow Court,Flat 6H,B1 1AA,38000,BR
+EMP009,Robert,Thompson,QR012345S,robert.thompson@company.com,369 Spruce Place,Apartment 7I,EH1 1AA,58000,1257L
+EMP010,Amanda,White,ST678901U,amanda.white@company.com,741 Ash Boulevard,Suite 8J,CF1 1AA,44000,BR 
